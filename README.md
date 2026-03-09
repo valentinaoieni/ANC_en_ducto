@@ -12,6 +12,6 @@ Active Noise Control in pipe.
 Repository of the Final Project for the Examination of the Elective Subject ‘Acoustics and Electroacoustics’, formally called ‘Complements of Analogue Electronics I’.
 ### Authors:
 - Oieni Orozco, Valentina
-- - Suárez, Alejo
+- Suárez, Alejo
 
 Project developed in the Acoustics Department of the Institute of Automation (INAUT) at the National University of San Juan, Argentina (UNSJ).
