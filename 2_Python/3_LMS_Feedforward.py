@@ -158,7 +158,7 @@ def callback(indata, outdata, frames, time, status):
     outdata[:, 0] = x_n # Salida Canal 1 0 - LEFT / 1 - RIGHT
     
     # Entrada Mic Error
-    d_n = indata[:, 1] 
+    d_n = tono[idx : idx + frames] # cambiar por indata[:, 1] si se desea tomar la entrada real del microfono de referencia
     e_n = indata[:, 0]
     
     # Computo de señal de control
@@ -195,22 +195,22 @@ print("Estimación finalizada. Generando gráficos...")
 plt.figure(figsize=(12, 5))
 plt.subplot(3, 1, 1)
 plt.plot(t, error)
-plt.title('Error ANC FeedForward')
-plt.xlabel('Time')
-plt.ylabel('Amplitud')
+plt.title('Error ANC FeedForward', fontsize=22)
+plt.xlabel('Tiempo', fontsize=18)
+plt.ylabel('Amplitud', fontsize=18)
 plt.grid(True)
 plt.subplot(3, 1, 2)
 plt.plot(t, anti_noise_u, label='Accion Control')
-plt.title('Acción de Control')
-plt.xlabel('Time')
-plt.ylabel('Amplitud')
+plt.title('Acción de Control', fontsize=22)
+plt.xlabel('Tiempo', fontsize=18)
+plt.ylabel('Amplitud', fontsize=18)
 plt.grid(True)
 plt.legend()
 plt.subplot(3, 1, 3)
 plt.plot(t, source_noise, label='Fuente de Ruido')
-plt.title('Fuente de Ruido')
-plt.xlabel('Time')
-plt.ylabel('Amplitud')
+plt.title('Fuente de Ruido', fontsize=22)
+plt.xlabel('Tiempo', fontsize=18)
+plt.ylabel('Amplitud', fontsize=18)
 plt.grid(True)
 plt.legend()
 plt.tight_layout()

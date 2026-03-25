@@ -126,9 +126,9 @@ def callback(indata, outdata, frames, time_info, status):
     x_chunk = noise[idx : idx + frames]
     
     _ = est.process_block(x_chunk, d_chunk)
-    # print(len(d_chunk))
     
-    outdata[:, 0] = x_chunk # Sale por el parlante actuador
+    outdata[:, 1] = x_chunk # Se envía la señal por un parlante
+    outdata[:, 0] = np.zeros(len(x_chunk)) # Se envía una señal nula por el otro parlante para asegurarse que no emita sonido
     idx += frames
 
 # --- EJECUCIÓN ---
@@ -150,16 +150,16 @@ plt.figure(figsize=(12, 6))
 plt.subplot(2,1,1)
 plt.stem(est.w)
 plt.axvline(max_idx, color='r', linestyle='--', label=f'Pico en {max_idx}')
-plt.title("Respuesta al Impulso (Filtro W)")
+plt.title("Respuesta al Impulso del Camino Feedback")
 plt.legend()
 
 plt.subplot(2,1,2)
-# plt.plot(20 * np.log10(np.abs(est.error_history) + 1e-7))
 plt.plot(est.error_history)
 plt.title("Historial del Error")
 plt.tight_layout()
 plt.show()
 
-file_path = r'/home/alejo/Documentos/final_acustica/feedback_path_coefs.npy'
 
+# Se exportan los coeficientes para utilizarlos posteriormente en el algoritmo
+file_path = r'/home/alejo/Documentos/final_acustica/feedback_path_coefs.npy'
 np.savetxt(file_path, est.w, delimiter=',')

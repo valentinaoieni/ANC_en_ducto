@@ -73,6 +73,7 @@ DEVICE = 5 #'hw:2,0'
 flag = True
 
 print(sd.query_devices())
+input("Presione [Enter] para continuar")
 
 class RobustEstimator:
     def __init__(self, n_taps, mu, eps):
@@ -120,15 +121,14 @@ def callback(indata, outdata, frames, time_info, status):
         outdata.fill(0)
         return
 
-    # IMPORTANTE: Asegúrate de que el canal de entrada sea el correcto
-    # Si usas el input 2 de la Focusrite, sería indata[:, 1]
+    # Asgurarse de que tanto para la entrada como la salida el mapeo sea correcto
     d_chunk = indata[:, 0] 
     x_chunk = noise[idx : idx + frames]
     
     _ = est.process_block(x_chunk, d_chunk)
-    # print(len(d_chunk))
     
-    outdata[:, 0] = x_chunk
+    outdata[:, 1] = x_chunk # Sale por el parlante actuador
+    outdata[:, 0] = np.zeros(len(x_chunk)) # Sale por el parlante actuador
     idx += frames
 
 # --- EJECUCIÓN ---
@@ -150,16 +150,40 @@ plt.figure(figsize=(12, 6))
 plt.subplot(2,1,1)
 plt.stem(est.w)
 plt.axvline(max_idx, color='r', linestyle='--', label=f'Pico en {max_idx}')
-plt.title("Respuesta al Impulso (Filtro W)")
+plt.title("Respuesta al Impulso (Filtro W)") 
 plt.legend()
 
 plt.subplot(2,1,2)
-# plt.plot(20 * np.log10(np.abs(est.error_history) + 1e-7))
 plt.plot(est.error_history)
 plt.title("Historial del Error")
 plt.tight_layout()
 plt.show()
 
+# Se guardan los coeficientes para utilizarlos luego
+
 file_path = r'/home/alejo/Documentos/final_acustica/s_hat_coefs.npy'
 
 np.savetxt(file_path, est.w, delimiter=',')
+
+# Se realiza el ploteo de la respuesta en frecuencia obtenida a partir de la respuesta impulsiva
+NFFT = 8192
+H = np.fft.rfft(est.w, NFFT)
+freq = np.fft.rfftfreq(NFFT, 1/FS)
+
+# Magnitud en dB
+mag = np.abs(H)
+H_db = 20 * np.log10(mag / np.max(mag) + 1e-6) 
+
+plt.figure(figsize=(12, 6))
+plt.semilogx(freq, H_db)
+
+plt.title("Respuesta en Frecuencia Estimación (NLMS)", fontsize=18)
+plt.xlabel("Frecuencia [Hz]", fontsize=14)
+plt.ylabel("Magnitud [dB]", fontsize=14)
+
+plt.xlim(100, 15000) # f0 y f1 del código anterior
+plt.ylim([-60, 5])      # Un rango de 60dB suele ser estándar para ver claridad
+plt.grid(True, which="both")
+
+plt.tight_layout()
+plt.show()
