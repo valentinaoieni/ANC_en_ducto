@@ -1,0 +1,3 @@
+Estas Simulaciones fueron pruebas para intentar controlar la planta mediante
+Simulink, no terminaro funcionando pero se puede probar hacer andar con un mu que
+sea lo suficientemente chico como el utilizado en la Implementacion de Python

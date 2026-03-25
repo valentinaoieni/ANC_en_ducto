@@ -1,0 +1,7 @@
+Se deben ejecutar las simulaciones en el siguiente orden:
+
+1) Siempre primero la Estimacion de S(z)
+
+2) Cualquiera de las tres configuraciones: Feedforward, Feedback o Hybrid
+
+Esto se debe a que los archivos de las configuraciones utilizan la estimación del camino secundario que se calcula en esa primera simulación SzSolo_ultimo.slx
