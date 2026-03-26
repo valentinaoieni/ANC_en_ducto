@@ -1,0 +1,82 @@
+TUTORIAL DE INSTALACIÓN DE SETEO PARA EJECUTAR APLICACIÓN DE PYTHON EN WINDOWS
+
+1. Instalar Visual Studio Code
+2. Instalar intérprete de python y setear todo en Visual Studio Code para poder programar en python y ejecutar código
+
+
+3. Instalar Visual Studio Build Tools 2022
+	Comando en PowerShell (COMO ADMINISTRADOR):
+	winget install -e --id Microsoft.VisualStudio.2022.BuildTools
+
+4. Descargar .zip o .tgz o .rar o similar de  ASIO SDK 
+https://www.steinberg.net/developers/asiosdk-open/
+
+5. Descargar .zip o .tgzportaudio:
+https://files.portaudio.com/download.html
+
+6. Descomprimir port audio
+
+7. Descomprimir toda la carpeta de ASIO SDK en la carpeta creada de port audio:
+Por ejemplo, si el disco es C:
+C:\portaudio\src\hostapi\asio\
+
+8. instalar CMake para Windows:
+ https://cmake.org/download/
+----------------------------------------------
+(Hasta aquí se llegó)
+--------------------------------------------
+9. Se debería ejecutar en PowerShell:
+& "C:\Program Files\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat"
+
+Si no se encuentra el archivo, se debe ir siguiendo la ruta hasta que se encuentre y especificar cualquier cambio en dicha ruta
+
+10. Cambiar el directorio, todo desde Powershell:
+cd C:\portaudio\build
+
+11. Ejecutar:
+
+cmake -G "Visual Studio 17 2022" -A x64 -DPA_USE_ASIO=ON ..
+
+Si aparece el error "cmake : no se reconoce como nombre de un cmdlet..."
+
+Se debe verificar la instalación de cmake
+
+En PowerShell:
+
+& "C:\Program Files\CMake\bin\cmake.exe" --version
+
+Si funciona ✔ → está instalado correctamente
+
+
+SOLUCIÓN 2 (recomendada) — agregar CMake al PATH
+
+Así puedes usar cmake desde cualquier terminal.
+
+🔧 Pasos
+
+Presiona:
+
+Win + S → escribe "variables de entorno"
+Abre:
+Editar las variables de entorno del sistema
+Clic en:
+Variables de entorno
+
+En "Variables del sistema", busca:
+
+Path
+Clic en Editar
+Agrega:
+C:\Program Files\CMake\bin
+Aceptar todo
+⚠️ IMPORTANTE
+
+Cierra y vuelve a abrir la terminal después de esto.
+
+🔍 Verificar
+
+Abre nueva terminal y ejecuta:
+
+cmake --version
+
+Si ves versión → ✔ listo
